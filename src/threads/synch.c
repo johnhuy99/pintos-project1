@@ -361,7 +361,8 @@ cond_cmp_priority(const struct list_elem *a, const struct list_elem *b, void *au
 {
   struct semaphore_elem *sa = list_entry(a, struct semaphore_elem, elem);
   struct semaphore_elem *sb = list_entry(b, struct semaphore_elem, elem);
-  return list_entry(list_front(&sa->semaphore.waiters), struct thread, elem)->priority > \ 
-     list_entry(list_front(&sb->semaphore.waiters), struct thread, elem)->priority;
+  struct list_elem *e1 = list_front(&sa->semaphore.waiters);
+  struct list_elem *e2 = list_front(&sb->semaphore.waiters);
+  return list_entry(e1, struct thread, elem)->priority > list_entry(e2, struct thread, elem)->priority;
 }
 
