@@ -185,6 +185,7 @@ thread_create (const char *name, int priority,
   /* Initialize thread. */
   init_thread (t, name, priority);
   tid = t->tid = allocate_tid ();
+  t->wake_ticks = 0;
 
   /* Stack frame for kernel_thread(). */
   kf = alloc_frame (t, sizeof *kf);
@@ -251,6 +252,7 @@ thread_unblock (struct thread *t)
   list_insert_ordered(&ready_list, &t->elem, thread_cmp_priority, NULL);
 
   t->status = THREAD_READY;
+  t->wake_ticks = 0;
   intr_set_level (old_level);
 }
 
